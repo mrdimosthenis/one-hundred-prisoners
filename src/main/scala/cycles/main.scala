@@ -8,22 +8,22 @@ val threshold = 50
 val experiments = 10000
 
 @tailrec
-def canAllEscape(closedBoxes: Map[Int, Int], openBoxes: Vector[(Int, Int)]): Boolean =
+def largeCycleExists(closedBoxes: Map[Int, Int], openBoxes: Vector[(Int, Int)]): Boolean =
   val isCycleComplete = openBoxes.nonEmpty && openBoxes.head._1 == openBoxes.last._2
   if openBoxes.size > threshold then
-    false
+    true
   else if closedBoxes.isEmpty then
-    true
+    false
   else if isCycleComplete && closedBoxes.size <= threshold then
-    true
+    false
   else if isCycleComplete then
-    canAllEscape(closedBoxes, Vector())
+    largeCycleExists(closedBoxes, Vector())
   else
     val nextBoxKey = openBoxes.lastOption.map(_._2).getOrElse(closedBoxes.keys.head)
     val nextBoxVal = closedBoxes(nextBoxKey)
     val updatedClosedBoxes = closedBoxes - nextBoxKey
     val updatedOpenBoxes = openBoxes :+ nextBoxKey -> nextBoxVal
-    canAllEscape(updatedClosedBoxes, updatedOpenBoxes)
+    largeCycleExists(updatedClosedBoxes, updatedOpenBoxes)
 
 def initBoxes: Map[Int, Int] =
   val ids = 1 to prisoners
@@ -34,7 +34,7 @@ def initBoxes: Map[Int, Int] =
 def main(): Unit =
   val successes =
     Iterator
-      .continually(canAllEscape(initBoxes, Vector()))
+      .continually(largeCycleExists(initBoxes, Vector()))
       .take(experiments)
       .count(identity)
       .toDouble
