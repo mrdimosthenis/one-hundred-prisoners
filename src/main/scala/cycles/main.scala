@@ -3,7 +3,7 @@ package cycles
 import scala.annotation.tailrec
 import scala.util.Random
 
-val prisoners = 100
+val numOfBoxes = 100
 val threshold = 50
 val experiments = 10000
 
@@ -26,7 +26,7 @@ def largeCycleExists(closedBoxes: Map[Int, Int], openBoxes: Vector[(Int, Int)]):
     largeCycleExists(updatedClosedBoxes, updatedOpenBoxes)
 
 def initBoxes: Map[Int, Int] =
-  val ids = 1 to prisoners
+  val ids = 1 to numOfBoxes
   val shuffledIds = Random.shuffle(ids)
   ids.zip(shuffledIds).toMap
 
