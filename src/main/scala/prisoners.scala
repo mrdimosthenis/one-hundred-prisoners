@@ -9,13 +9,13 @@ val experiments = 10000
 def canEscape(boxes: Map[Int, Int], prisonerId: Int, revealedNumbers: Vector[Int]): Boolean =
   val nextBoxId = revealedNumbers.lastOption.getOrElse(prisonerId)
   val nextRevealedNum = boxes(nextBoxId)
-  val newRevealedNumbers = revealedNumbers :+ nextRevealedNum
-  if newRevealedNumbers.size > threshold then
+  val updatedRevealedNumbers = revealedNumbers :+ nextRevealedNum
+  if updatedRevealedNumbers.size > threshold then
     false
   else if nextRevealedNum == prisonerId then
     true
   else
-    canEscape(boxes, prisonerId, newRevealedNumbers)
+    canEscape(boxes, prisonerId, updatedRevealedNumbers)
 
 def canAllEscape: Boolean =
   val ids = 1 to prisoners
