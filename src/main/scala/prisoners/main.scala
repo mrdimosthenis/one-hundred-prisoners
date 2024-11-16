@@ -8,7 +8,7 @@ val threshold = 50
 val experiments = 10000
 
 @tailrec
-def canEscape(boxes: Map[Int, Int], prisonerId: Int, revealedNumbers: Vector[Int]): Boolean =
+def canEscape(prisonerId: Int, boxes: Map[Int, Int], revealedNumbers: Vector[Int]): Boolean =
   val nextBoxId = revealedNumbers.lastOption.getOrElse(prisonerId)
   val nextRevealedNum = boxes(nextBoxId)
   val updatedRevealedNumbers = revealedNumbers :+ nextRevealedNum
@@ -17,13 +17,13 @@ def canEscape(boxes: Map[Int, Int], prisonerId: Int, revealedNumbers: Vector[Int
   else if nextRevealedNum == prisonerId then
     true
   else
-    canEscape(boxes, prisonerId, updatedRevealedNumbers)
+    canEscape(prisonerId, boxes, updatedRevealedNumbers)
 
 def canAllEscape: Boolean =
   val ids = 1 to prisoners
   val shuffledIds = Random.shuffle(ids)
   val boxes = ids.zip(shuffledIds).toMap
-  ids.forall(prisonerId => canEscape(boxes, prisonerId, Vector()))
+  ids.forall(prisonerId => canEscape(prisonerId, boxes, Vector()))
 
 @main
 def main(): Unit =
