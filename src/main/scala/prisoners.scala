@@ -25,5 +25,10 @@ def canAllEscape: Boolean =
 
 @main
 def main(): Unit =
-  val successes = (1 to experiments).count(_ => canAllEscape).toDouble
+  val successes =
+    Iterator
+      .continually(canAllEscape)
+      .take(experiments)
+      .count(identity)
+      .toDouble
   println(s"Success rate: ${successes / experiments}")
