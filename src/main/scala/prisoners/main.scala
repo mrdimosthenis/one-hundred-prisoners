@@ -1,3 +1,5 @@
+package prisoners
+
 import scala.annotation.tailrec
 import scala.util.Random
 
