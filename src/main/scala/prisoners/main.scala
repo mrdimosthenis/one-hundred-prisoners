@@ -1,35 +1,46 @@
 package prisoners
 
-import scala.annotation.tailrec
 import scala.util.Random
 
-val prisoners = 100
+val numOfPrisoners = 100
 val threshold = 50
 val experiments = 10000
 
-@tailrec
-def canEscape(boxes: Map[Int, Int], prisonerId: Int, revealedNumbers: Vector[Int]): Boolean =
-  val nextBoxId = revealedNumbers.lastOption.getOrElse(prisonerId)
-  val nextRevealedNum = boxes(nextBoxId)
-  val updatedRevealedNumbers = revealedNumbers :+ nextRevealedNum
-  if updatedRevealedNumbers.size > threshold then
-    false
-  else if nextRevealedNum == prisonerId then
-    true
-  else
-    canEscape(boxes, prisonerId, updatedRevealedNumbers)
-
-def canAllEscape: Boolean =
-  val ids = 1 to prisoners
+def randomBoxConfiguration: Map[Int, Int] =
+  val ids = 1 to numOfPrisoners
   val shuffledIds = Random.shuffle(ids)
-  val boxes = ids.zip(shuffledIds).toMap
-  ids.forall(prisonerId => canEscape(boxes, prisonerId, Vector()))
+  ids.zip(shuffledIds).toMap
+
+def isVisitComplete(prisoner: Int)(openNumbers: Vector[Int]): Option[Boolean] =
+  openNumbers match
+    case vec if vec.size > threshold => Some(false)
+    case _ :+ `prisoner` => Some(true)
+    case _ => None
+
+def nextOpenNumbers(boxes: Map[Int, Int], prisoner: Int)(openNumbers: Vector[Int]): Vector[Int] =
+  val nextBoxId = openNumbers.lastOption.getOrElse(prisoner)
+  val nextOpenNum = boxes(nextBoxId)
+  openNumbers :+ nextOpenNum
+
+def isPrisonerFree(boxes: Map[Int, Int])(prisoner: Int): Boolean =
+  Iterator
+    .iterate(Vector.empty[Int])(nextOpenNumbers(boxes, prisoner))
+    .map(isVisitComplete(prisoner))
+    .collectFirst { case Some(result) => result }
+    .get
+
+def areAllPrisonersFree: Boolean =
+  val boxes = randomBoxConfiguration
+  Iterator
+    .from(1)
+    .take(numOfPrisoners)
+    .forall(isPrisonerFree(boxes))
 
 @main
 def main(): Unit =
   val successes =
     Iterator
-      .continually(canAllEscape)
+      .continually(areAllPrisonersFree)
       .take(experiments)
       .count(identity)
       .toDouble
