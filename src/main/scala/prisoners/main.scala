@@ -25,8 +25,8 @@ def isPrisonerFree(boxes: Vector[Int])(prisoner: Int): Boolean =
   Iterator
     .iterate(Vector.empty[Int])(nextOpenNumbers(boxes, prisoner))
     .map(isVisitComplete(prisoner))
-    .collectFirst { case Some(result) => result }
-    .get
+    .collectFirst { case Some(isComplete) => isComplete }
+    .getOrElse(throw Exception("Eternal visit"))
 
 def areAllPrisonersFree: Boolean =
   val boxes = shuffledNumbers
