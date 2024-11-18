@@ -15,7 +15,7 @@ def nextOpenNumbers(boxes: Vector[Int], prisoner: Int)(openNumbers: Vector[Int])
   val nextOpenNum = boxes(nextBoxId)
   openNumbers :+ nextOpenNum
 
-def isVisitComplete(prisoner: Int)(openNumbers: Vector[Int]): Option[Boolean] =
+def isVisitSuccessful(prisoner: Int)(openNumbers: Vector[Int]): Option[Boolean] =
   openNumbers match
     case vec if vec.size > threshold => Some(false)
     case _ :+ `prisoner` => Some(true)
@@ -24,7 +24,7 @@ def isVisitComplete(prisoner: Int)(openNumbers: Vector[Int]): Option[Boolean] =
 def isPrisonerFree(boxes: Vector[Int])(prisoner: Int): Boolean =
   Iterator
     .iterate(Vector.empty[Int])(nextOpenNumbers(boxes, prisoner))
-    .map(isVisitComplete(prisoner))
+    .map(isVisitSuccessful(prisoner))
     .collectFirst { case Some(result) => result }
     .get
 
