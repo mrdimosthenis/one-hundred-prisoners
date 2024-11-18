@@ -11,8 +11,8 @@ def shuffledNumbers: Vector[Int] =
   Random.shuffle(vec)
 
 def nextOpenNumbers(boxes: Vector[Int], prisoner: Int)(openNumbers: Vector[Int]): Vector[Int] =
-  val nextBoxId = openNumbers.lastOption.getOrElse(prisoner)
-  val nextOpenNum = boxes(nextBoxId)
+  val nextBoxIndex = openNumbers.lastOption.getOrElse(prisoner)
+  val nextOpenNum = boxes(nextBoxIndex)
   openNumbers :+ nextOpenNum
 
 def isVisitSuccessful(prisoner: Int)(openNumbers: Vector[Int]): Option[Boolean] =
