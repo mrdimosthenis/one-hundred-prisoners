@@ -12,15 +12,13 @@ def shuffledMapOfNumbers: Map[Int, Int] =
   boxKeys.zip(boxVals).toMap
 
 def nextOpenAndClosedBoxes(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, Int]): (Vector[(Int, Int)], Map[Int, Int]) =
-  (openBoxes, closedBoxes) match
-    case (v, m) if v.isEmpty =>
-      (Vector(m.head), m.tail)
-    case (v, _) if v.nonEmpty && v.head._1 == v.last._2 =>
-      (Vector(), closedBoxes)
-    case (v, m) =>
-      val nextOpenBoxes = v :+ v.last._2 -> closedBoxes(v.last._2)
-      val nextClosedBoxes = closedBoxes - v.last._2
-      (nextOpenBoxes, nextClosedBoxes)
+  if openBoxes.isEmpty then (Vector(closedBoxes.head), closedBoxes.tail)
+  else if openBoxes.head._1 == openBoxes.last._2 then (Vector(), closedBoxes)
+  else
+    val nextBoxKey = openBoxes.last._2
+    val nextOpenBoxes = openBoxes :+ nextBoxKey -> closedBoxes(nextBoxKey)
+    val nextClosedBoxes = closedBoxes - nextBoxKey
+    (nextOpenBoxes, nextClosedBoxes)
 
 def isLargeCycleDetected(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, Int]): Option[Boolean] =
   (openBoxes, closedBoxes) match
