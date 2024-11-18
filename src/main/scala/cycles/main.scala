@@ -21,11 +21,10 @@ def nextOpenAndClosedBoxes(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, 
     (nextOpenBoxes, nextClosedBoxes)
 
 def isLargeCycleDetected(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, Int]): Option[Boolean] =
-  (openBoxes, closedBoxes) match
-    case (v, _) if v.size > threshold => Some(true)
-    case (_, m) if m.isEmpty => Some(false)
-    case (v, m) if v.isEmpty && m.size <= threshold => Some(false)
-    case _ => None
+  if openBoxes.size > threshold then Some(true)
+  else if closedBoxes.isEmpty then Some(false)
+  else if openBoxes.isEmpty && closedBoxes.size <= threshold then Some(false)
+  else None
 
 def areAllCyclesSmall(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, Int]): Boolean =
   Iterator
