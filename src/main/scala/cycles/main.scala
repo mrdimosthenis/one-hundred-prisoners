@@ -1,40 +1,46 @@
 package cycles
 
-import scala.annotation.tailrec
 import scala.util.Random
 
 val numOfBoxes = 100
 val threshold = 50
 val experiments = 10000
 
-@tailrec
-def largeCycleExists(closedBoxes: Map[Int, Int], openBoxes: Vector[(Int, Int)]): Boolean =
-  val isCycleComplete = openBoxes.nonEmpty && openBoxes.head._1 == openBoxes.last._2
-  if openBoxes.size > threshold then
-    true
-  else if closedBoxes.isEmpty then
-    false
-  else if isCycleComplete && closedBoxes.size <= threshold then
-    false
-  else if isCycleComplete then
-    largeCycleExists(closedBoxes, Vector())
-  else
-    val nextBoxKey = openBoxes.lastOption.map(_._2).getOrElse(closedBoxes.keys.head)
-    val nextBoxVal = closedBoxes(nextBoxKey)
-    val updatedClosedBoxes = closedBoxes - nextBoxKey
-    val updatedOpenBoxes = openBoxes :+ nextBoxKey -> nextBoxVal
-    largeCycleExists(updatedClosedBoxes, updatedOpenBoxes)
+def shuffledMapOfNumbers: Map[Int, Int] =
+  val boxKeys = LazyList.range(0, numOfBoxes)
+  val boxVals = Random.shuffle(boxKeys)
+  boxKeys.zip(boxVals).toMap
 
-def initBoxes: Map[Int, Int] =
-  val ids = 1 to numOfBoxes
-  val shuffledIds = Random.shuffle(ids)
-  ids.zip(shuffledIds).toMap
+def nextOpenAndClosedBoxes(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, Int]): (Vector[(Int, Int)], Map[Int, Int]) =
+  (openBoxes, closedBoxes) match
+    case (v, m) if v.isEmpty =>
+      (Vector(m.head), m.tail)
+    case (v, _) if v.nonEmpty && v.head._1 == v.last._2 =>
+      (Vector(), closedBoxes)
+    case (v, m) =>
+      val nextOpenBoxes = v :+ v.last._2 -> closedBoxes(v.last._2)
+      val nextClosedBoxes = closedBoxes - v.last._2
+      (nextOpenBoxes, nextClosedBoxes)
+
+def isLargeCycleDetected(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, Int]): Option[Boolean] =
+  (openBoxes, closedBoxes) match
+    case (v, _) if v.size > threshold => Some(true)
+    case (_, m) if m.isEmpty => Some(false)
+    case (v, m) if v.isEmpty && m.size <= threshold => Some(false)
+    case _ => None
+
+def areAllCyclesSmall(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, Int]): Boolean =
+  Iterator
+    .iterate((openBoxes, closedBoxes))(nextOpenAndClosedBoxes)
+    .map(isLargeCycleDetected)
+    .collectFirst { case Some(result) => !result }
+    .get
 
 @main
 def main(): Unit =
   val successes =
     Iterator
-      .continually(largeCycleExists(initBoxes, Vector()))
+      .continually(areAllCyclesSmall(Vector(), shuffledMapOfNumbers))
       .take(experiments)
       .count(identity)
       .toDouble
