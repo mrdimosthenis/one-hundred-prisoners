@@ -11,9 +11,14 @@ def shuffledMapOfNumbers: Map[Int, Int] =
   val boxVals = Random.shuffle(boxKeys)
   boxKeys.zip(boxVals).toMap
 
-def nextOpenAndClosedBoxes(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, Int]): (Vector[(Int, Int)], Map[Int, Int]) =
-  if openBoxes.isEmpty then (Vector(closedBoxes.head), closedBoxes.tail)
-  else if openBoxes.head._1 == openBoxes.last._2 then (Vector(), closedBoxes)
+def nextOpenAndClosedBoxes(openBoxes: Vector[(Int, Int)], closedBoxes: Map[Int, Int]):
+(Vector[(Int, Int)], Map[Int, Int]) =
+  if openBoxes.isEmpty then
+    val (singletonMap, nextClosedBoxes) = closedBoxes.splitAt(1)
+    val nextOpenBoxes = openBoxes :+ singletonMap.head
+    (nextOpenBoxes, nextClosedBoxes)
+  else if openBoxes.head._1 == openBoxes.last._2 then
+    (Vector(), closedBoxes)
   else
     val nextBoxKey = openBoxes.last._2
     val nextOpenBoxes = openBoxes :+ nextBoxKey -> closedBoxes(nextBoxKey)
