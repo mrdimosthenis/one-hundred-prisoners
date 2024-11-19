@@ -10,21 +10,20 @@ def shuffledNumbers: Vector[Int] =
   val vec = Vector.range(0, numOfPrisoners)
   Random.shuffle(vec)
 
-def nextOpenNumbers(boxes: Vector[Int], prisoner: Int)(openNumbers: Vector[Int]): Vector[Int] =
-  val nextBoxIndex = openNumbers.lastOption.getOrElse(prisoner)
-  val nextOpenNum = boxes(nextBoxIndex)
-  openNumbers :+ nextOpenNum
+def nextOpenNumbers(boxes: Vector[Int], prisonerId: Int)(openNumbers: Vector[Int]): Vector[Int] =
+  val nextBoxIndex = openNumbers.lastOption.getOrElse(prisonerId)
+  openNumbers :+ boxes(nextBoxIndex)
 
-def isVisitSuccessful(prisoner: Int)(openNumbers: Vector[Int]): Option[Boolean] =
+def isVisitSuccessful(prisonerId: Int)(openNumbers: Vector[Int]): Option[Boolean] =
   openNumbers match
     case vec if vec.size > threshold => Some(false)
-    case _ :+ `prisoner` => Some(true)
+    case _ :+ `prisonerId` => Some(true)
     case _ => None
 
-def isPrisonerFree(boxes: Vector[Int])(prisoner: Int): Boolean =
+def isPrisonerFree(boxes: Vector[Int])(prisonerId: Int): Boolean =
   Iterator
-    .iterate(Vector.empty[Int])(nextOpenNumbers(boxes, prisoner))
-    .map(isVisitSuccessful(prisoner))
+    .iterate(Vector.empty[Int])(nextOpenNumbers(boxes, prisonerId))
+    .map(isVisitSuccessful(prisonerId))
     .collectFirst { case Some(result) => result }
     .get
 
