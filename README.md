@@ -5,7 +5,7 @@
 The riddle involves 100 prisoners numbered from 0 to 99, and a room with 100 boxes numbered
 in the same range. Each box contains a slip of paper with a distinct random number from 0 to 99.
 Every prisoner is allowed to enter the room, open up to 50 boxes, and try to find the slip of
-paper with their corresponding number.
+paper with his corresponding number.
 
 If all prisoners find their numbers, they are set free.
 
@@ -23,24 +23,22 @@ impossible.
 ### The Strategy
 
 Before the process begins, the inmates decide to follow this plan: Each prisoner will first
-open the box numbered with their own id. If they find their number inside, they will stop.
-If not, they will next open the box numbered with what they found in the slip of paper
-inside the previous box. They will continue this process until they find their own id or
+open the box numbered with his own id. If he finds his number inside, he will stop.
+If not, he will next open the box numbered with what he found in the slip of paper
+inside the previous box. He will continue this process until he finds his own id or
 open 50 boxes.
 
 An example of this strategy is as follows:
-* The prisoner with id 0 will first open box 0. They will find a number, say 42, inside.
-They will then open box 42 and find the number 0. They will stop and leave the room.
-* The prisoner with id 1 will first open box 1. They will find a number, say 1, inside.
-They will stop and leave the room.
-* The prisoner with id 2 will first open box 2. They will find a number, say 99, inside.
-They will then open box 99 and find the number 55. They will then open box 55 and find
-the number 2. They will stop and leave the room.
-Up to this point, all prisoners have found their numbers. But they will all set free only
-if all prisoners find their numbers before opening 50 boxes each.
 
-
-
+* The prisoner with id 0 will first open box 0. He will find a number, say 42, inside.
+  He will then open box 42 and find the number 0. He will stop and leave the room.
+* The prisoner with id 1 will first open box 1. He will find a number, say 1, inside.
+  He will stop and leave the room.
+* The prisoner with id 2 will first open box 2. He will find a number, say 99, inside.
+  He will then open box 99 and find the number 55. He will then open box 55 and find
+  the number 2. He will stop and leave the room.
+  Up to this point, these prisoners have found their numbers. But they will all set free
+  only if all prisoners find their numbers before opening 50 boxes each.
 
 ```scala 3
 import scala.util.Random
@@ -137,4 +135,8 @@ def main(): Unit =
   println(s"Success rate: ${successes / experiments}")
 ```
 
-
+* In this version of the problem the range of the prisoner and box numbers is from 0 to 99.
+  That way it's easier to be used as indices in array-like structures.
+* Also, all prisoners are male. If they were gender-agnostic, the text would be difficult
+  to follow. So, I decided to use the "he" pronoun when I refer to a single prisoner, and
+  "they" when I refer to multiple prisoners.
