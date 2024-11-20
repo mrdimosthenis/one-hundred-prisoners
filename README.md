@@ -22,7 +22,22 @@ impossible.
 
 ### The Strategy
 
+Before the process begins, the inmates decide to follow this plan: Each prisoner will first
+open the box numbered with their own id. If they find their number inside, they will stop.
+If not, they will next open the box numbered with what they found in the slip of paper
+inside the previous box. They will continue this process until they find their own id or
+open 50 boxes.
 
+An example of this strategy is as follows:
+* The prisoner with id 0 will first open box 0. They will find a number, say 42, inside.
+They will then open box 42 and find the number 0. They will stop and leave the room.
+* The prisoner with id 1 will first open box 1. They will find a number, say 1, inside.
+They will stop and leave the room.
+* The prisoner with id 2 will first open box 2. They will find a number, say 99, inside.
+They will then open box 99 and find the number 55. They will then open box 55 and find
+the number 2. They will stop and leave the room.
+Up to this point, all prisoners have found their numbers. But they will all set free only
+if all prisoners find their numbers before opening 50 boxes each.
 
 
 
