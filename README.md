@@ -40,6 +40,45 @@ An example of this strategy is as follows:
   Up to this point, these prisoners have found their numbers. But they will all set free
   only if all prisoners find their numbers before opening 50 boxes each.
 
+### Probability Estimation
+
+We will code the riddle and the strategy in Scala, and run it multiple times to estimate the
+probability of the prisoners setting free.
+
+#### The Representation in Code
+
+We need two main data structures to track what's happening:
+
+1. The `boxes` will be a vector of 100 shuffled integers. The index of each element will
+   represent the box number, and the value of each element will represent the number that
+   is written on the slip of paper inside that box. Throughout a single experiment, the
+   size and the content of this vector will not change.
+2. The `openNumbers` will represent the numbers that the prisoner has found so far. It will
+   be a vector of integers that starts empty and grows as the prisoner opens more boxes.
+   The last element of this vector will be the number of the box that the prisoner has
+   to open next.
+
+#### The Flow of the Process
+
+We will define a couple of functions. The first one will make the state evolve, and the
+second one will check if the state is terminal.
+
+1. The `nextOpenNumbers` function will return the `openNumbers` vector with the number
+   found in the last box appended to it. If the `openNumbers` vector is empty, it means
+   that the prisoner has just entered the room. In this case, the prisoner will open
+   the box numbered with his own id. Otherwise, the prisoner will open the box numbered
+   with the last element of the `openNumbers` vector.
+2. The `isVisitSuccessful` function will check the termination of a prisoner's visit and
+   its end result. If the size of the `openNumbers` vector is greater than 50 the visit
+   will be considered complete and failed. If the last element of the `openNumbers` vector
+   is the prisoner's id, the visit will be considered complete and successful. Otherwise,
+   the visit will be considered incomplete.
+
+#### The Code Itself
+
+If we glue the above-mentioned data structures and functions together, we may come up with
+something like this:
+
 ```scala 3
 import scala.util.Random
 
@@ -84,6 +123,12 @@ def main(): Unit =
       .toDouble
   println(s"Success rate: ${successes / experiments}")
 ```
+
+Running this code will give us an estimation of the probability of the prisoners setting free,
+which is around `0.31`.
+
+In the next sections we will see why the strategy increased the probability from (almost) zero
+to `31%`.
 
 ```scala 3
 import scala.util.Random
@@ -140,3 +185,5 @@ def main(): Unit =
 * Also, all prisoners are male. If they were gender-agnostic, the text would be difficult
   to follow. So, I decided to use the "he" pronoun when I refer to a single prisoner, and
   "they" when I refer to multiple prisoners.
+* I grouped the parameters of the functions to perform currying, partially apply them, and
+  make the code more readable.
