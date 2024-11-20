@@ -187,3 +187,5 @@ def main(): Unit =
   "they" when I refer to multiple prisoners.
 * I grouped the parameters of the functions to perform currying, partially apply them, and
   make the code more readable.
+* Iterators are memory-efficient because they lazily-evaluate elements one at a time. They
+  don't store all elements in memory at once.
