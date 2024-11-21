@@ -40,14 +40,11 @@ An example of this strategy is as follows:
   Up to this point, these prisoners have found their numbers. But they will all set free
   only if all prisoners find their numbers before opening 50 boxes each.
 
-### Probability Estimation
+### The Representation in Code
 
 We will code the riddle and the strategy in Scala, and run it multiple times to estimate the
-probability of the prisoners setting free.
-
-#### The Representation in Code
-
-We need two main data structures to track what's happening:
+probability of the prisoners setting free. We need two main data structures to track what's
+happening:
 
 1. The `boxes` will be a vector of 100 shuffled integers. The index of each element will
    represent the box number, and the value of each element will represent the number that
@@ -58,7 +55,7 @@ We need two main data structures to track what's happening:
    The last element of this vector will be the number of the box that the prisoner has
    to open next.
 
-#### The Flow of the Process
+### The Flow of the Process
 
 We will define a couple of functions. The first one will make the state evolve, and the
 second one will check if the state is terminal.
@@ -74,7 +71,7 @@ second one will check if the state is terminal.
    is the prisoner's id, the visit will be considered complete and successful. Otherwise,
    the visit will be considered incomplete.
 
-#### The Code Itself
+### The Code Itself
 
 If we glue the above-mentioned data structures and functions together, we may come up with
 something like this:
@@ -124,11 +121,112 @@ def main(): Unit =
   println(s"Success rate: ${successes / experiments}")
 ```
 
+### The Result
+
 Running this code will give us an estimation of the probability of the prisoners setting free,
 which is around `0.31`.
 
-In the next sections we will see why the strategy increased the probability from (almost) zero
-to `31%`.
+[This](https://www.youtube.com/watch?v=iSNsgj1OCLA) video by Veritasium gives a good
+description of the riddle and an excellent explanation of how the strategy increases
+the probability from almost zero to `31%`.
+
+In the next sections we will see some aspects of the strategy's behavior to better understand
+what's happening.
+
+### Tracing the Behavior of the Strategy
+
+Let's assume that we have only 10 prisoners, 10 boxes, a threshold of 5, and a single experiment.
+
+```scala 3
+val numOfPrisoners = 6
+val threshold = 3
+val experiments = 1
+```
+
+Let's also assume that we add a few print statements or breakpoints at the right places to
+display the state of the system at each step. In this case, we will see something like this:
+
+```
+Boxes: Vector(5, 4, 0, 1, 3, 2)
+Prisoner 0: Vector(5, 2, 0)
+Prisoner 0 freedom: true
+Prisoner 1: Vector(4, 3, 1)
+Prisoner 1 freedom: true
+Prisoner 2: Vector(0, 5, 2)
+Prisoner 2 freedom: true
+Prisoner 3: Vector(1, 4, 3)
+Prisoner 3 freedom: true
+Prisoner 4: Vector(3, 1, 4)
+Prisoner 4 freedom: true
+Prisoner 5: Vector(2, 0, 5)
+Prisoner 5 freedom: true
+```
+
+Examining the `Boxes` vector can help us understand what the outcome of the experiment will be.
+Let's represent the box `Vector(5, 4, 0, 1, 3, 2)` as a collection of key-value pairs, where
+the key is the box number and the value is what's written on the slip of paper inside that box.
+
+```
+0 -> 5
+1 -> 4
+2 -> 0
+3 -> 1
+4 -> 3
+5 -> 2
+```
+
+Now, let's treat it as a directed graph, where the key is the source node and the value is the
+destination. If we pay attention to this graph, we will see that it forms two cycles. The first
+cycle consists of the nodes `0, 5, 2`, and the second cycle consists of the nodes `1, 4, 3`.
+
+It doesn't matter which node the prisoner starts from. The prisoner ends up in his starting
+node after traversing a 3-sized cycle.
+
+The prisoner `0` followed the path `0 -> 5 -> 2 -> 0`. It succeeded in finding its own number
+without exceeding the threshold of 3. At this point, we know that the prisoners `5` and `2` will
+also succeed because they belong to the same cycle.
+
+## The Riddle in a new Form
+
+Instead of talking about jail rooms and prisoner visits, we can represent the riddle in a more
+abstract way: If we shuffle the numbers from 0 to 99 and place them inside 100 numbered boxes,
+what is the probability of the largest formed cycle being at most 50?
+
+In the following last sections, I will show how we can code this new form of the riddle, but
+its explanation will omit a few details about some corner cases and shortcuts to keep the
+text concise.
+
+### The Representation in the new Code
+
+We need two main data structures to track what's happening:
+
+1. The `openBoxes` will be a vector of key-value pairs. The first element of each pair will
+   represent the box number that we have opened, and the second element will represent
+   the number we found inside that box. This vector will start empty and grow as we open more
+   boxes.
+2. The `closedBoxes` will be a map of key-value pairs. The key will represent the box number,
+   and the value will represent the number that is written inside that box. At the beginning,
+   this map will contain 100 keys that point to 100 shuffled values. As the experiment proceeds,
+   the size of this map will decrease.
+
+### The Flow of the new Process
+
+As we did before, we will define a couple of functions. The first one will make the state
+evolve, and the second one will check if the state is terminal.
+
+1. The `nextOpenAndClosedBoxes` function will return a tuple of our two main data structures.
+   The first element of the tuple will be the `openBoxes` vector with the key-value pair of
+   the most recently opened box appended to it. The second element of the tuple will be the
+   `closedBoxes` map with the corresponding box removed from it.
+2. The `isLargeCycleDetected` function will check the termination of the experiment and its
+   end result. If the size of the `openBoxes` vector is greater than 50, the experiment will
+   be considered complete and failed. If the `closedBoxes` map is empty, the experiment will
+   be considered complete and successful.
+
+### The new Code
+
+Again, if we glue the above-mentioned data structures and functions together, we may come up
+with something like this:
 
 ```scala 3
 import scala.util.Random
@@ -179,6 +277,10 @@ def main(): Unit =
       .toDouble
   println(s"Success rate: ${successes / experiments}")
 ```
+
+Running this code will print something like `Success rate: 0.31`.
+
+## Notes
 
 * In this version of the problem the range of the prisoner and box numbers is from 0 to 99.
   That way it's easier to be used as indices in array-like structures.
