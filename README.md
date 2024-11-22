@@ -126,9 +126,8 @@ def main(): Unit =
 Running this code will give us an estimation of the probability of the prisoners setting free,
 which is around `0.31`.
 
-[This](https://www.youtube.com/watch?v=iSNsgj1OCLA) video by Veritasium gives a good
-description of the riddle and an excellent explanation of how the strategy increases
-the probability from almost zero to `31%`.
+[This](https://www.youtube.com/watch?v=iSNsgj1OCLA) video by Veritasium gives a nice description of the riddle and an excellent
+explanation of how the strategy increases the probability from almost zero to `31%`.
 
 In the next sections we will see some aspects of the strategy's behavior to better understand
 what's happening.
