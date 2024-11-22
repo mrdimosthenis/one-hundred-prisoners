@@ -1,6 +1,6 @@
-# 100 Prisoners Problem
+# The 100 Prisoners Escape Riddle
 
-## The Riddle
+## The Description
 
 The riddle involves 100 prisoners numbered from 0 to 99 and a room with 100 boxes numbered in the same range. Each box contains a slip of paper with a distinct random number from 0 to 99. Every prisoner is allowed to enter the room, open up to 50 boxes, and try to find the slip of paper with his corresponding number.
 
