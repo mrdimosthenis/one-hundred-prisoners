@@ -29,7 +29,7 @@ Up to this point, these prisoners have found their numbers. But they will all be
 
 ## The Representation in Code
 
-We will code the riddle and the strategy in Scala and run it multiple times to estimate the probability of the prisoners being set free. We need two main data structures to track what's happening:
+We will code the riddle and the strategy in Scala and run it to estimate the probability of the prisoners being set free. We need two main data structures to track what's happening:
 1. The `boxes` is a vector of 100 shuffled integers. The index of each element will represent the box number, and the value of each element will represent the number that is written on the slip of paper inside that box. Throughout a single experiment, the size and the content of this vector will not change.
 2. The `openNumbers` will represent the numbers that the prisoner has found so far. It will be a vector of integers that starts empty and grows as the prisoner opens boxes. The last element of this vector is the number of the box that the prisoner has to open next.
 
