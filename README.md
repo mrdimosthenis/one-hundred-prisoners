@@ -160,10 +160,14 @@ We need two main data structures to track what's happening:
 As we did before, we will define a couple of functions. The first one will make the state evolve, and the second one will check if the state is terminal.
 
 1. The `nextOpenAndClosedBoxes` function will return the tuple of our two main data structures. The first element of the tuple is the `openBoxes` vector with the key-value pair of the most recently opened box appended to it. The second element of the tuple is the `closedBoxes` map with the most recently opened box removed from it. There are two special cases we need to pay attention to:
-  a. If `openBoxes` is empty, it means that we have not opened any boxes yet. We will open any box, and we will move its key-value pair from the `closedBoxes` map to the `openBoxes` vector.
-  b. If the first element of the first pair is equal to the second element of the last pair in the `openBoxes` vector, it means that we have formed a cycle.
+
+   * If `openBoxes` is empty, it means that we have not opened any boxes yet. We will open anyone, we will remove its key-value pair from the `closedBoxes` map and append it to the `openBoxes` vector.
+
+   * If the first element of the first pair is equal to the second element of the last pair in the `openBoxes` vector, it means that we have formed a cycle.
+
 2. The `isLargeCycleDetected` function will check the termination of the experiment and its end result. If the size of the `openBoxes` vector is greater than 50, the experiment will be considered complete and failed. If the `closedBoxes` map is empty, the experiment will be considered complete and successful. There is also a special case where we look for a shortcut:
-  a. If the `openBoxes` vector is empty we know that a search for a new cycle has just started. In this case, if the size of the `closedBoxes` map is not greater than 50, we don't need to continue the process. We know for sure that all remaining cycles will be small.
+
+   * If the `openBoxes` vector is empty we know that a search for a new cycle has just started. In this case, if the size of the `closedBoxes` map is not greater than 50, we don't need to continue the process. We know for sure that all remaining cycles will be small.
 
 ### The New Code
 
