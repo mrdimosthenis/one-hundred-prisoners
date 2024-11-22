@@ -280,7 +280,7 @@ def main(): Unit =
 
 Running this code will print something like `Success rate: 0.31`.
 
-## Notes
+## A Few Notes
 
 * In this version of the problem the range of the prisoner and box numbers is from 0 to 99.
   That way it's easier to be used as indices in array-like structures.
