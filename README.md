@@ -149,17 +149,17 @@ display the state of the system at each step. In this case, we will see somethin
 ```
 Boxes: Vector(5, 4, 0, 1, 3, 2)
 Prisoner 0: Vector(5, 2, 0)
-Prisoner 0 freedom: true
+Prisoner 0 succeed: true
 Prisoner 1: Vector(4, 3, 1)
-Prisoner 1 freedom: true
+Prisoner 1 succeed: true
 Prisoner 2: Vector(0, 5, 2)
-Prisoner 2 freedom: true
+Prisoner 2 succeed: true
 Prisoner 3: Vector(1, 4, 3)
-Prisoner 3 freedom: true
+Prisoner 3 succeed: true
 Prisoner 4: Vector(3, 1, 4)
-Prisoner 4 freedom: true
+Prisoner 4 succeed: true
 Prisoner 5: Vector(2, 0, 5)
-Prisoner 5 freedom: true
+Prisoner 5 succeed: true
 ```
 
 Examining the `Boxes` vector can help us understand what the outcome of the experiment will be.
