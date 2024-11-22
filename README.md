@@ -134,7 +134,7 @@ what's happening.
 
 ### Tracing the Behavior of the Strategy
 
-Let's assume that we have only 10 prisoners, 10 boxes, a threshold of 5, and a single experiment.
+Let's assume that we have only 6 prisoners, 6 boxes, a threshold of 3, and a single experiment.
 
 ```scala 3
 val numOfPrisoners = 6
@@ -143,7 +143,7 @@ val experiments = 1
 ```
 
 Let's also assume that we add a few print statements or breakpoints at the right places to
-display the state of the system at each step. In this case, we will see something like this:
+display the state of the system at specific points in time:
 
 ```
 Boxes: Vector(5, 4, 0, 1, 3, 2)
