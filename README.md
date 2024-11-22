@@ -46,13 +46,13 @@ We will code the riddle and the strategy in Scala, and run it multiple times to 
 probability of the prisoners setting free. We need two main data structures to track what's
 happening:
 
-1. The `boxes` will be a vector of 100 shuffled integers. The index of each element will
+1. The `boxes` is a vector of 100 shuffled integers. The index of each element will
    represent the box number, and the value of each element will represent the number that
    is written on the slip of paper inside that box. Throughout a single experiment, the
    size and the content of this vector will not change.
 2. The `openNumbers` will represent the numbers that the prisoner has found so far. It will
-   be a vector of integers that starts empty and grows as the prisoner opens more boxes.
-   The last element of this vector will be the number of the box that the prisoner has
+   be a vector of integers that starts empty and grows as the prisoner opens boxes.
+   The last element of this vector is the number of the box that the prisoner has
    to open next.
 
 ### The Flow of the Process
@@ -67,9 +67,9 @@ second one will check if the state is terminal.
    with the last element of the `openNumbers` vector.
 2. The `isVisitSuccessful` function will check the termination of a prisoner's visit and
    its end result. If the size of the `openNumbers` vector is greater than 50 the visit
-   will be considered complete and failed. If the last element of the `openNumbers` vector
-   is the prisoner's id, the visit will be considered complete and successful. Otherwise,
-   the visit will be considered incomplete.
+   is considered complete and failed. If the last element of the `openNumbers` vector
+   is the prisoner's id, the visit is considered complete and successful. Otherwise,
+   the visit is considered incomplete.
 
 ### The Code Itself
 
@@ -162,7 +162,7 @@ Prisoner 5: Vector(2, 0, 5)
 Prisoner 5 succeed: true
 ```
 
-Examining the `Boxes` vector can help us understand what the outcome of the experiment will be.
+Examining the `Boxes` vector can help us understand the outcome of the experiment.
 Let's represent the box `Vector(5, 4, 0, 1, 3, 2)` as a collection of key-value pairs, where
 the key is the box number and the value is what's written on the slip of paper inside that box.
 
@@ -200,11 +200,11 @@ text concise.
 
 We need two main data structures to track what's happening:
 
-1. The `openBoxes` will be a vector of key-value pairs. The first element of each pair will
+1. The `openBoxes` is a vector of key-value pairs. The first element of each pair will
    represent the box number that we have opened, and the second element will represent
    the number we found inside that box. This vector will start empty and grow as we open more
    boxes.
-2. The `closedBoxes` will be a map of key-value pairs. The key will represent the box number,
+2. The `closedBoxes` is a map of key-value pairs. The key will represent the box number,
    and the value will represent the number that is written inside that box. At the beginning,
    this map will contain 100 keys that point to 100 shuffled values. As the experiment proceeds,
    the size of this map will decrease.
@@ -215,8 +215,8 @@ As we did before, we will define a couple of functions. The first one will make 
 evolve, and the second one will check if the state is terminal.
 
 1. The `nextOpenAndClosedBoxes` function will return a tuple of our two main data structures.
-   The first element of the tuple will be the `openBoxes` vector with the key-value pair of
-   the most recently opened box appended to it. The second element of the tuple will be the
+   The first element of the tuple is the `openBoxes` vector with the key-value pair of
+   the most recently opened box appended to it. The second element of the tuple is the
    `closedBoxes` map with the corresponding box removed from it.
 2. The `isLargeCycleDetected` function will check the termination of the experiment and its
    end result. If the size of the `openBoxes` vector is greater than 50, the experiment will
