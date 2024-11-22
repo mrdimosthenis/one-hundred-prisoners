@@ -8,11 +8,11 @@ If all prisoners find their numbers, they are set free.
 
 The prisoners are allowed to decide on a strategy before the process begins, but they are forbidden from communicating with each other once the first inmate enters the room. They should also leave the room exactly as they found it, with all boxes closed.
 
-### The Lack of Strategy
+## The Lack of Strategy
 
 If the prisoners decide to open boxes without any strategy, the probability of all of them finding their numbers is `(50/100) * (50/100) * ... * (50/100)` (100 times), which is `(1/2)^100`, or `0.0000000000000000000000000000008`. Their success is practically impossible.
 
-### The Strategy
+## The Strategy
 
 Before the process begins, the inmates decide to follow this plan:
 - Each prisoner will first open the box numbered with his own ID.
@@ -27,7 +27,7 @@ An example of this strategy is as follows:
 
 Up to this point, these prisoners have found their numbers. But they will all be set free only if all prisoners find their numbers before opening 50 boxes each.
 
-### The Representation in Code
+## The Representation in Code
 
 We will code the riddle and the strategy in Scala and run it multiple times to estimate the probability of the prisoners being set free. We need two main data structures to track what's happening:
 1. The `boxes` is a vector of 100 shuffled integers. The index of each element will represent the box number, and the value of each element will represent the number that is written on the slip of paper inside that box. Throughout a single experiment, the size and the content of this vector will not change.
@@ -220,6 +220,8 @@ def main(): Unit =
 ```
 
 Running this code will print something like `Success rate: 0.31`.
+
+## A Few Notes
 
 * In this version of the problem, the range of the prisoner and box numbers is from 0 to 99. That way it's easier to use as indices in array-like structures.
 * All prisoners are male. If they were gender-agnostic, the text would be difficult to follow. So, I decided to use the "he" pronoun when I refer to a single prisoner, and "they" when I refer to multiple prisoners.
