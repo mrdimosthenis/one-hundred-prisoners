@@ -284,7 +284,7 @@ Running this code will print something like `Success rate: 0.31`.
 
 * In this version of the problem the range of the prisoner and box numbers is from 0 to 99.
   That way it's easier to be used as indices in array-like structures.
-* Also, all prisoners are male. If they were gender-agnostic, the text would be difficult
+* All prisoners are male. If they were gender-agnostic, the text would be difficult
   to follow. So, I decided to use the "he" pronoun when I refer to a single prisoner, and
   "they" when I refer to multiple prisoners.
 * I grouped the parameters of the functions to perform currying, partially apply them, and
