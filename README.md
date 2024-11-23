@@ -140,7 +140,7 @@ Now, let's treat it as a directed graph, where the key is the source node and th
 
 It doesn't matter which node the prisoner starts from. The prisoner ends up in his starting node after traversing a 3-sized cycle.
 
-The prisoner `0` followed the path `0 -> 5 -> 2 -> 0`. It succeeded in finding its own number without exceeding the threshold of 3. At this point, we know that the prisoners `5` and `2` will also succeed because they belong to the same cycle.
+The prisoner `0` followed the path `0 -> 5 -> 2 -> 0`. He succeeded in finding his own number without exceeding the threshold of 3. At this point, we know that the prisoners `5` and `2` will also succeed because they belong to the same cycle.
 
 ## The Riddle in a New Form
 
@@ -157,11 +157,11 @@ We need two main data structures to track what's happening:
 
 ### The Flow of the New Process
 
-As we did before, we will define a couple of functions. The first one will make the state evolve, and the second one will check if the state is terminal.
+As we did before, we will define a couple of functions. The first one will make the state evolve, and the second will check if the state is terminal.
 
 1. The `nextOpenAndClosedBoxes` function will return the tuple of our two main data structures. The first element of the tuple is the `openBoxes` vector with the key-value pair of the most recently opened box appended to it. The second element of the tuple is the `closedBoxes` map with the most recently opened box removed from it. There are two special cases we need to pay attention to:
 
-   * If `openBoxes` is empty, it means that we have not opened any boxes yet. We will open anyone, we will remove its key-value pair from the `closedBoxes` map and append it to the `openBoxes` vector.
+   * If `openBoxes` is empty, it means that we have not opened any boxes yet. We will open any of them, we will remove its key-value pair from the `closedBoxes` map and append it to the `openBoxes` vector.
 
    * If the first element of the first pair is equal to the second element of the last pair in the `openBoxes` vector, it means that we have formed a cycle.
 
@@ -227,7 +227,7 @@ Running this code will print something like `Success rate: 0.31`.
 
 ## A Few Notes
 
-* In this version of the problem, the range of the prisoner and box numbers is from 0 to 99. That way it's easier to use as indices in array-like structures.
+* In this version of the problem, the range of the prisoner and box numbers is from 0 to 99. That way it's easier to use them as indices in array-like structures.
 * All prisoners are male. If they were gender-agnostic, the text would be difficult to follow. So, I decided to use the "he" pronoun when I refer to a single prisoner, and "they" when I refer to multiple prisoners.
 * I grouped the parameters of the functions to perform currying, partially apply them, and make the code more readable.
 * Iterators are memory-efficient because they lazily evaluate elements one at a time. They don't store all elements in memory at once.
